@@ -69,7 +69,7 @@
                 @endforeach
 
                 <div class="d-grid gap-2">
-                    <button class="btn btn-primary" type="button">Checkout</button>
+                    <a href="{{ route("checkout") }}" class="btn btn-primary" type="button">Checkout</a>
                 </div>
             @else
                 <div>Cart is empty.</div>

@@ -24,7 +24,7 @@ Route::post('/cart', [CartController::class, 'store']);
 Route::patch('/cart/{id}', [CartController::class, 'update']);
 Route::delete('/cart/{id}', [CartController::class, 'destroy']);
 
-Route::get('/checkout', [CheckoutController::class, 'index']);
+Route::get('/checkout', [CheckoutController::class, 'index'])->name("checkout");
 Route::post('/checkout', [CheckoutController::class, 'create']);
 
 

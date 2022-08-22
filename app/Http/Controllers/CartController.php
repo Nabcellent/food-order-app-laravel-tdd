@@ -13,7 +13,7 @@ class CartController extends Controller
 {
     public function index(CartRepository $cart): Factory|View|Application
     {
-        $cartItems = $cart->get();;
+        $cartItems = $cart->get();
 
         return view('cart', ["cartItems" => $cartItems]);
     }

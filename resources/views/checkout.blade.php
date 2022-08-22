@@ -9,7 +9,8 @@
 <body>
 <div class="container-fluid mt-5">
 
-    <div class="mx-auto" style="width: 450px;">
+    <form method="POST" class="mx-auto" style="width: 450px;">
+        @csrf
 
         <h6>Order Summary</h6>
 
@@ -34,15 +35,11 @@
             </tbody>
         </table>
 
-        <div>
-            Total: ${{ $total }}
-        </div>
-
+        <div>Total: ${{ $total }}</div>
 
         <button type="submit" class="btn btn-primary btn-lg float-end">Submit Order</button>
-
-    </div>
-
+    </form>
 </div>
+
 </body>
 </html>

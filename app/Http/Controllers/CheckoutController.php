@@ -4,10 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use App\Repositories\CartRepository;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Routing\Redirector;
 
 class CheckoutController extends Controller
 {
-    public function index(CartRepository $cart)
+    public function index(CartRepository $cart): Factory|View|Application
     {
         $checkout_items = $cart->get();
         $total = $cart->total();
@@ -16,7 +21,7 @@ class CheckoutController extends Controller
         return view('checkout', compact('checkout_items', 'total'));
     }
 
-    public function create(CartRepository $cart)
+    public function create(CartRepository $cart): Redirector|Application|RedirectResponse
     {
         $checkoutItems = $cart->get();
         $total = $cart->total();
