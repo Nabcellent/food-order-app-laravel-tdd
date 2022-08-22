@@ -53,7 +53,6 @@ class CartTest extends TestCase
     /** @test */
     public function items_added_to_the_cart_can_be_seen_in_the_cart_page()
     {
-
         Product::factory()->create([
             'id'   => 1,
             'name' => 'Taco',
