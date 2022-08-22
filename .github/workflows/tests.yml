@@ -29,7 +29,8 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: 8.1
-          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite
+#          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite
+#          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite
           coverage: none
 
       - name: Install Composer dependencies
@@ -44,10 +45,10 @@ jobs:
       - name: Clear Config
         run: php artisan config:clear
 
-#      - name: Run Migration
-#        run: php artisan migrate -v
-#        env:
-#          DB_PORT: ${{ job.services.mysql.ports['3306'] }}
+      - name: Run Migration
+        run: php artisan migrate -v
+        env:
+          DB_PORT: ${{ job.services.mysql.ports['3306'] }}
 
       - name: Execute tests
         run: vendor/bin/phpunit
