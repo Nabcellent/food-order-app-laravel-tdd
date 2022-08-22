@@ -3,13 +3,10 @@
 namespace Tests\Feature;
 
 use App\Models\Product;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class CartTest extends TestCase
 {
-    use RefreshDatabase;
-
     /** @test */
     public function cart_page_can_be_accessed()
     {
@@ -83,6 +80,7 @@ class CartTest extends TestCase
                 'name'  => 'Taco',
                 'image' => 'some-image.jpg',
                 'cost'  => 1.5,
+                'subtotal' => 1.5
             ],
             [
                 'id'    => 3,
@@ -90,6 +88,7 @@ class CartTest extends TestCase
                 'name'  => 'BBQ',
                 'image' => 'some-image.jpg',
                 'cost'  => 3.2,
+                'subtotal' => 3.2
             ]
         ];
 
@@ -163,12 +162,12 @@ class CartTest extends TestCase
             ]
         ]);
 
-        $this->patch('/cart/3', [ // update qty of BBQ to 5
-                                  'qty' => 5,
-        ])->assertRedirect('/cart')->assertSessionHasNoErrors()->assertSessionHas('cart', [
-            ['id' => 1, 'qty' => 1],
-            ['id' => 3, 'qty' => 5],
-        ]);
+        // update qty of BBQ to 5
+        $this->patch('/cart/3', ['qty' => 5])->assertRedirect('/cart')->assertSessionHasNoErrors()
+            ->assertSessionHas('cart', [
+                ['id' => 1, 'qty' => 1],
+                ['id' => 3, 'qty' => 5],
+            ]);
 
         // verify that cart page is showing the expected items
         $this->get('/cart')->assertSeeInOrder([
@@ -182,6 +181,5 @@ class CartTest extends TestCase
             '$3.2',
             '5',
         ]);
-
     }
 }

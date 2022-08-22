@@ -3,12 +3,10 @@
 namespace Tests\Feature;
 
 use App\Models\Product;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class CheckoutTest extends TestCase
 {
-    use RefreshDatabase;
 
     /** @test */
     public function cart_items_can_be_seen_from_the_checkout_page()

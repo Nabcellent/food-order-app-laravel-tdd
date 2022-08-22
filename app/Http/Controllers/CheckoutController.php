@@ -3,63 +3,27 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
-use App\Models\Product;
+use App\Repositories\CartRepository;
 
 class CheckoutController extends Controller
 {
-    public function index()
+    public function index(CartRepository $cart)
     {
-        $items = Product::whereIn('id', collect(session('cart'))->pluck('id'))->get();
-        $checkout_items = collect(session('cart'))->map(function($row, $index) use ($items) {
-            $qty = (int)$row['qty'];
-            $cost = (float)$items[$index]->cost;
-            $subtotal = $cost * $qty;
+        $checkout_items = $cart->get();
+        $total = $cart->total();
 
-            return [
-                'id'       => $row['id'],
-                'qty'      => $qty,
-                'name'     => $items[$index]->name,
-                'cost'     => $cost,
-                'subtotal' => round($subtotal, 2),
-            ];
-        });
-
-        $total = $checkout_items->sum('subtotal');
-        $checkout_items = $checkout_items->toArray();
 
         return view('checkout', compact('checkout_items', 'total'));
     }
 
-    public function create()
+    public function create(CartRepository $cart)
     {
-        $items = Product::whereIn(
-            'id',
-            collect(session('cart'))->pluck('id')
-        )->get();
-        $checkout_items = collect(session('cart'))->map(function (
-            $row,
-            $index
-        ) use ($items) {
-            $qty = (int) $row['qty'];
-            $cost = (float) $items[$index]->cost;
-            $subtotal = $cost * $qty;
+        $checkoutItems = $cart->get();
+        $total = $cart->total();
 
-            return [
-                'id' => $row['id'],
-                'qty' => $qty,
-                'name' => $items[$index]->name,
-                'cost' => $cost,
-                'subtotal' => round($subtotal, 2),
-            ];
-        });
+        $order = Order::create(['total' => $total]);
 
-        $total = $checkout_items->sum('subtotal');
-
-        $order = Order::create([
-            'total' => $total,
-        ]);
-
-        foreach ($checkout_items as $item) {
+        foreach ($checkoutItems as $item) {
             $order->detail()->create([
                 'product_id' => $item['id'],
                 'cost' => $item['cost'],

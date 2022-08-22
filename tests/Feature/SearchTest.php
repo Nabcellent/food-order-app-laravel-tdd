@@ -3,13 +3,10 @@
 namespace Tests\Feature;
 
 use App\Models\Product;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class SearchTest extends TestCase
 {
-    use RefreshDatabase;
-
     public function test_food_search_page_is_accessible()
     {
         $this->get('/')->assertOk();
