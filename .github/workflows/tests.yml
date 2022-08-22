@@ -8,14 +8,18 @@ jobs:
 
     services:
       mysql:
-        image: mysql:8.0
+        image: mysql:latest
         env:
-          MYSQL_ROOT_PASSWORD: root
-          MYSQL_DATABASE: test
+          MYSQL_ALLOW_EMPTY_PASSWORD: false
+          MYSQL_ROOT_PASSWORD: password
+          MYSQL_DATABASE: laravel
         ports:
-          - 33306:3306
+          - 3306/tcp
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
-
+    strategy:
+      fail-fast: false
+      matrix:
+        php-versions: ['7.4', '8.0', '8.1']
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -36,9 +40,15 @@ jobs:
       - name: Generate app key
         run: php artisan key:generate
 
+      - name: Clear Config
+        run: php artisan config:clear
+
+      - name: Run Migration
+        run: php artisan migrate -v
+        env:
+          DB_PORT: ${{ job.services.mysql.ports['3306'] }}
+
       - name: Execute tests
         env:
-          DB_HOST: mysql
-          DB_DATABASE: test
-          DB_PASSWORD: root
+          DB_PORT: ${{ job.services.mysql.ports['3306'] }}
         run: vendor/bin/phpunit
