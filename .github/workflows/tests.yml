@@ -38,6 +38,7 @@ jobs:
 
       - name: Execute tests
         env:
+          DB_HOST: mysql
           DB_DATABASE: test
           DB_PASSWORD: root
         run: vendor/bin/phpunit
