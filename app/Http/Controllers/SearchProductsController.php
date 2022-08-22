@@ -9,9 +9,7 @@ class SearchProductsController extends Controller
     public function index()
     {
         $queryStr = request('query');
-        $items = Product::when($queryStr, function($query, $queryStr) {
-            return $query->where('name', 'LIKE', "%{$queryStr}%");
-        })->get();
+        $items = Product::matches($queryStr)->get();
 
         return view('search', compact('items'));
     }
