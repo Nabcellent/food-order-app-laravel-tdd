@@ -44,10 +44,10 @@ jobs:
       - name: Clear Config
         run: php artisan config:clear
 
-      - name: Run Migration
-        run: php artisan migrate -v
-        env:
-          DB_PORT: ${{ job.services.mysql.ports['3306'] }}
+#      - name: Run Migration
+#        run: php artisan migrate -v
+#        env:
+#          DB_PORT: ${{ job.services.mysql.ports['3306'] }}
 
       - name: Execute tests
         run: vendor/bin/phpunit
